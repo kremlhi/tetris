@@ -158,7 +158,9 @@ static jmp_buf jmpbuf;
 void
 jmpback(int sig)
 {
+/*
 	longjmp(jmpbuf, sig);
+*/
 }
 
 static void
@@ -196,7 +198,7 @@ animate(int level)
 		static struct itimerval tval;
 		tval.it_value.tv_usec = stop - usecs();
 		setitimer(ITIMER_REAL, &tval, NULL);
-setjmp(jmpbuf);
+/* setjmp(jmpbuf); */
 		for(;stop - usecs() > 0;)
 			keys(board, &p, &x, &y, &elapsed);
 		}
@@ -317,6 +319,8 @@ keys(int *board, struct piece *p, int *x, int *y, int *elapsed)
 	}
 }
 
+void nop(int s){}
+
 int
 main(int argc, char *argv[])
 {
@@ -325,7 +329,7 @@ main(int argc, char *argv[])
 	signal(SIGINT, cleanexit);
 	signal(SIGTERM, cleanexit);
 	signal(SIGWINCH, redraw);
-	signal(SIGALRM, jmpback);
+	signal(SIGALRM, nop);
 
 	level = 1;
 	if(argc > 1)
