@@ -1,0 +1,2 @@
+tetris.c: change select(2) to setitimer(2)
+tetris.[ch]: make more generic and implement new user interface

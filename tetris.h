@@ -9,8 +9,8 @@
 enum colour_t {
 	NORMAL = 0,
 	INVERT = 7,
-	BGCOLOUR = 40,
-	RED = 41,
+	BGCOLOUR = 30,
+	RED = 31,
 	GREEN,
 	YELLOW,
 	BLUE,

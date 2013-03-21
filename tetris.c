@@ -152,17 +152,6 @@ drawpreview(struct piece *old, struct piece *preview)
 	drawpiece(preview, WIDTH + 4, 8, INVERT);
 }
 
-#include <setjmp.h>
-static jmp_buf jmpbuf;
-
-void
-jmpback(int sig)
-{
-/*
-	longjmp(jmpbuf, sig);
-*/
-}
-
 static void
 animate(int level)
 {
@@ -187,22 +176,11 @@ animate(int level)
 	for(x = WIDTH/2, y = NPARTS;; y++){
 		drawpiece(&p, x, y, BGCOLOUR);
 		stop = usecs() + delay;
-#ifdef USE_SELECT
 		for(;;){
 			if(udelay(0, stop - usecs()) < 1)
 				break;
 			keys(board, &p, &x, &y, &elapsed);
 		}
-#else
-		{
-		static struct itimerval tval;
-		tval.it_value.tv_usec = stop - usecs();
-		setitimer(ITIMER_REAL, &tval, NULL);
-/* setjmp(jmpbuf); */
-		for(;stop - usecs() > 0;)
-			keys(board, &p, &x, &y, &elapsed);
-		}
-#endif
 			
 		if(!validmove(board, &p, x, y + 1)){
 			drawpiece(&p, x, y, INVERT);

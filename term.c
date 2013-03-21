@@ -32,7 +32,8 @@ drawpixel(int x, int y, enum colour_t colour)
 {
 	if(y < 4)
 		return;
-	printf(CSI "%d;%dH" CSI "%dm  " CSI "0m", y - 3, x*2 + 27, colour);
+	posxy(x, y);
+	printf(CSI "7;%dm" "  " CSI "0m", colour);
 }
 
 void
